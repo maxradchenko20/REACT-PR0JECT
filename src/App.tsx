@@ -7,6 +7,9 @@ import {publicRoutes} from "./components/router/publicRoutes";
 import {privateRoutes} from "./components/router/privateRoutes";
 import {error} from "./components/router/errorRoutes";
 import {User} from "../utils/State";
+import axios from "axios";
+import {useQuery} from "react-query";
+
 
 export function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
