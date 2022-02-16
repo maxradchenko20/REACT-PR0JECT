@@ -19,7 +19,7 @@ export type AppContextType = {
   setUserName: <T>(T: string) => any;
   products: any,
   setProducts: <T>(T: any) => any
-  searchValue: any,
+  searchValue: string,
   setSearchValue: <T>(T: any) => any
 }
 

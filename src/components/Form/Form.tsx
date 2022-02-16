@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useContext} from "react";
+import React, {ChangeEvent, FC, useContext, useState} from "react";
 import * as yup from "yup";
 import {SubmitHandler, useForm} from "react-hook-form";
 
@@ -54,6 +54,7 @@ const schema = yup.object({
 export const Form: FC = () => {
   const {products, setProducts, searchValue, setSearchValue} = useContext(SimpleCtx)
 
+
   const classes = useClasses();
 
   //FORM
@@ -73,24 +74,22 @@ export const Form: FC = () => {
           <SearchIcon className={classes.searchIcon}/>
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextField
-              // onChange={onChange}
+              type="text"
               variant="standard"
               className={classes.searchInput}
-              type="search"
               autoComplete='off'
               label="Search..."
               inputProps={{
                 maxLength: 10
               }}
-              helperText={errors.searchValue ? errors.searchValue?.message : ''}
-
+              // helperText={errors.searchValue ? errors.searchValue?.message : ''}
               {...register("searchValue")}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
             <Button
               type="submit"
               variant="contained"
               color="inherit"
-              onClick={() => reset()}
             >
               Search
             </Button>

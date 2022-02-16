@@ -1,4 +1,4 @@
-import React, {FC, useContext, useState} from "react";
+import React, {FC, useContext} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -8,7 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import {SimpleCtx} from "../../context/Context";
 
-import {fade, makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import {Form} from "../Form/Form";
 
 const useStyles = makeStyles({
@@ -69,9 +69,10 @@ export const BasicTable: FC = ({children}) => {
   const {products, searchValue} = useContext(SimpleCtx)
 
   // @ts-ignore
-  const filtered = products.filter(elem => {
-    return elem.name.toLowerCase().includes(searchValue.toLowerCase())
+  const filteredNames = products.filter(user => {
+    return user.name.toLowerCase().includes(searchValue.toLowerCase())
   })
+
 
   return (
     <>
@@ -82,7 +83,7 @@ export const BasicTable: FC = ({children}) => {
             <TableHeader/>
             <TableBody>
               {/*@ts-ignore*/}
-              {filtered.map((elem) => (
+              {filteredNames.map((elem) => (
                 <TableRow key={elem.id}>
                   <TableCell align="right">{elem.id}</TableCell>
                   <TableCell align="right">{elem.name}</TableCell>
