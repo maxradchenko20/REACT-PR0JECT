@@ -1,5 +1,6 @@
 import {createContext} from "react";
 
+
 export const initialContext = {
   isLoggedIn: false,
   setIsLoggedIn: Function,
@@ -8,7 +9,9 @@ export const initialContext = {
   products: [],
   setProducts: Function,
   searchValue: " ",
-  setSearchValue: Function
+  setSearchValue: Function,
+  openModal: false,
+  setOpenModal: Function,
 };
 
 export type AppContextType = {
@@ -20,6 +23,8 @@ export type AppContextType = {
   setProducts: <T>(T: any) => any
   searchValue: string,
   setSearchValue: <T>(T: any) => any
+  openModal: any,
+  setOpenModal: <T>(T: any) => any
 }
 
 export const SimpleCtx = createContext<AppContextType>(initialContext);

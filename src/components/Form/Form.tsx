@@ -1,15 +1,14 @@
-import React, {ChangeEvent, FC, useContext, useState} from "react";
+import React, {ChangeEvent, FC, useContext} from "react";
 import * as yup from "yup";
 import {SubmitHandler, useForm} from "react-hook-form";
 
 import {yupResolver} from "@hookform/resolvers/yup";
-import {Button} from "@mui/material";
 import SearchIcon from "@material-ui/icons/Search";
 import {SimpleCtx} from "../../context/Context";
 import {makeStyles} from "@material-ui/core/styles";
 import {AppBar, TextField, Toolbar,} from "@material-ui/core";
 import AddIcon from '@mui/icons-material/Add';
-
+import '../../index.css'
 
 const useClasses = makeStyles({
   table: {
@@ -63,7 +62,7 @@ const schema = yup.object({
 }).required();
 
 export const Form: FC = () => {
-  const {products, setProducts, searchValue, setSearchValue} = useContext(SimpleCtx)
+  const {searchValue, setSearchValue} = useContext(SimpleCtx)
 
   const classes = useClasses();
 
@@ -100,20 +99,15 @@ export const Form: FC = () => {
                 onChange={(e) => setSearchValue(e.target.value)}
               />
             </div>
-            <div className={classes.form_children}>
-              <Button
-                style={{marginRight: 10}}
-                type="submit"
-                variant="contained"
-                color="inherit"
-                onClick={() => console.log(searchValue)}
-              >
-                Search
-              </Button>
+            <div className="wrapper">
+              <div className="icon add">
+                <p className="tooltip">Add User</p>
+                <span> <AddIcon style={{color: 'black'}}/></span>
+              </div>
             </div>
           </form>
         </div>
-        <a href=""> <AddIcon style={{color: 'white'}}/></a>
+
       </Toolbar>
     </AppBar>
   )

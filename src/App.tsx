@@ -18,10 +18,11 @@ export function App() {
   const [userName, setUserName] = useState(getItLocalStorage("userName"));
   const [products, setProducts] = useState<Array<User>>([]);
   const [searchValue, setSearchValue] = useState('')
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <SimpleCtx.Provider
-      value={{isLoggedIn, setIsLoggedIn, userName, setUserName, products, setProducts, searchValue, setSearchValue}}>
+      value={{isLoggedIn, setIsLoggedIn, userName, setUserName, products, setProducts, searchValue, setSearchValue,openModal, setOpenModal}}>
       <Router>
         <>
           <Header/>

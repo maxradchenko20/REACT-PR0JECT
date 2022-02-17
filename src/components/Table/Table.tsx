@@ -1,4 +1,4 @@
-import React, {FC, useContext, useState} from "react";
+import React, {FC, useContext} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -7,15 +7,12 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import {SimpleCtx} from "../../context/Context";
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import {makeStyles} from "@material-ui/core/styles";
 import {Form} from "../Form/Form";
 import axios from "axios";
-import {useQuery} from "react-query";
-import {deleteTodo} from "../../containers/BlogPage/BlogPage";
-
+import {AlertDialog} from "../Modal/AlertDialog";
 
 const useStyles = makeStyles({
   table: {
@@ -80,15 +77,26 @@ const TableHeader: FC = () => {
   )
 }
 
-type Props = {
-  onDelete: (id: any) => any
-
-}
+// type Props = {
+//   deleteTodo: (id: any, e: React.MouseEvent<HTMLButtonElement>) => any
+// }
 
 // @ts-ignore
-export const BasicTable: FC<Props> = ({removeTask}) => {
+export const BasicTable: FC<Props> = () => {
   const classes = useStyles();
-  const {products, searchValue} = useContext(SimpleCtx)
+
+  const {products, setProducts,searchValue,setOpenModal} = useContext(SimpleCtx)
+
+  const deleteTodo = (id: any, e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    axios.delete(
+      `http://localhost:4000/api/users/${id}`)
+      .then(res => {
+        console.log('deleted!!', res)
+        setOpenModal(true)
+        setProducts([...products.filter((list: { id: any; }) => list.id !== id)])
+      }).catch(err => console.log(err))
+  };
 
   // @ts-ignore
   const filteredNames = products.filter(user => {
@@ -115,9 +123,10 @@ export const BasicTable: FC<Props> = ({removeTask}) => {
                   <TableCell align="right">{elem.website}</TableCell>
                   <TableCell align="right">
                     {/*<a href=""> <EditIcon/></a>*/}
-                    {/*<button onClick={(e) => deleteTodo(elem.id, e)}><DeleteOutlineIcon style={{color: 'red'}}/></button>*/}
+                    <AlertDialog/>
 
-                    <button onClick={() => removeTask(elem.id)}><DeleteOutlineIcon style={{color: 'red'}}/></button>
+                    <button onClick={(e) => deleteTodo(elem.id, e)}><DeleteOutlineIcon style={{color: 'red'}}/></button>
+                    {/*<button onClick={() => removeTask(elem.id)}><DeleteOutlineIcon style={{color: 'red'}}/></button>*/}
                   </TableCell>
                 </TableRow>
               ))}
