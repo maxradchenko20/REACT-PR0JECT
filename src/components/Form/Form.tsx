@@ -1,23 +1,27 @@
-import React, {ChangeEvent, FC, useContext} from "react";
+import React, {FC, useContext} from "react";
 import * as yup from "yup";
-import {SubmitHandler, useForm} from "react-hook-form";
+import {Controller, SubmitHandler, useForm} from "react-hook-form";
 
 import {yupResolver} from "@hookform/resolvers/yup";
 import SearchIcon from "@material-ui/icons/Search";
-import {SimpleCtx} from "../../context/Context";
 import {makeStyles} from "@material-ui/core/styles";
 import {AppBar, TextField, Toolbar,} from "@material-ui/core";
 import AddIcon from '@mui/icons-material/Add';
 import '../../index.css'
+import {useMutation} from "react-query";
+import {getUsers} from "../../shared/queries";
+import {userContext} from "../../context/Context";
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
 
 const useClasses = makeStyles({
   table: {
     minWidth: 650
   },
   pokedexContainer: {
-    paddingTop: "20px",
-    paddingLeft: "50px",
-    paddingRight: "50px",
+    paddingTop: 20,
+    paddingLeft: 50,
+    paddingRight: 50,
   },
   cardMedia: {
     margin: "auto",
@@ -27,19 +31,19 @@ const useClasses = makeStyles({
   },
   searchContainer: {
     display: "flex",
-    paddingLeft: "20px",
-    paddingRight: "20px",
-    marginTop: "5px",
-    marginBottom: "5px",
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 5,
+    marginBottom: 5,
     width: '100%',
   },
   searchIcon: {
     alignSelf: "flex-end",
-    marginBottom: "5px",
+    marginBottom: 5,
   },
   searchInput: {
-    width: "300px",
-    margin: "5px",
+    width: 300,
+    margin: 5,
   },
   form: {
     width: '100%',
@@ -54,50 +58,62 @@ const useClasses = makeStyles({
 });
 
 interface IFormInputs {
-  searchValue: string;
+  userName: string;
 }
 
-const schema = yup.object({
-  searchValue: yup.string().required(),
-}).required();
+const schema = yup.object().shape({
+  userName: yup.string().required(),
+});
 
 export const Form: FC = () => {
-  const {searchValue, setSearchValue} = useContext(SimpleCtx)
+  const {setUsers} = useContext(userContext);
 
   const classes = useClasses();
 
   //FORM
-  const {register, handleSubmit, reset, formState: {errors}} = useForm<IFormInputs>({
-    resolver: yupResolver(schema)
+  const form = useForm<IFormInputs>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      userName: ''
+    }
   });
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => console.log(data)
+  const searchUserMutation = useMutation('get-user', getUsers, {
+    onSuccess: (data) => {
+      setUsers(data.data);
+      console.log(data.data)
+    }
+  });
 
-  //Basic search
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.currentTarget.value);
-  };
+  const onSubmit: SubmitHandler<IFormInputs> = (data: any) => {
+    searchUserMutation.mutate(data.userName);
+  }
 
   return (
     <AppBar position="static">
       <Toolbar>
         <div className={classes.searchContainer}>
-          <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+          <form className={classes.form} onSubmit={form.handleSubmit(onSubmit)}>
             <div className={classes.form_children}>
               <SearchIcon className={classes.searchIcon}/>
-              <TextField
-                type="search"
-                variant="standard"
-                className={classes.searchInput}
-                autoComplete='off'
-                label="Search by name..."
-                inputProps={{
-                  maxLength: 10
-                }}
-                // helperText={errors.searchValue ? errors.searchValue?.message : ''}
-                {...register("searchValue")}
-                onChange={(e) => setSearchValue(e.target.value)}
-              />
+              <Controller control={form.control} name="userName" render={({field}) => {
+                return <TextField {...field} label="Search by name..."/>
+              }}/>
+              {/*<TextField*/}
+              {/*  type="search"*/}
+              {/*  variant="standard"*/}
+              {/*  className={classes.searchInput}*/}
+              {/*  autoComplete='off'*/}
+              {/*  label="Search by name..."*/}
+              {/*  inputProps={{*/}
+              {/*    maxLength: 10*/}
+              {/*  }}*/}
+              {/*  // helperText={errors.searchValue ? errors.searchValue?.message : ''}*/}
+              {/*  {...register("searchValue")}*/}
+              {/*/>*/}
+              <Button variant="contained" endIcon={<SendIcon/>}>
+                Send
+              </Button>
             </div>
             <div className="wrapper">
               <div className="icon add">
@@ -105,6 +121,7 @@ export const Form: FC = () => {
                 <span> <AddIcon style={{color: 'black'}}/></span>
               </div>
             </div>
+
           </form>
         </div>
 

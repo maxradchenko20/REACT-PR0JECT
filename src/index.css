@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box
+}
+
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -12,12 +16,6 @@ code {
     monospace;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap');
-
-* {
-    box-sizing: border-box
-}
-
 body {
     margin: 0;
     font-family: 'Nunito', sans-serif;
@@ -25,76 +23,6 @@ body {
 
 a {
     text-decoration: none
-}
-
-button {
-    outline: unset;
-    border: none;
-    background-color: unset;
-    cursor: pointer;
-}
-
-input, textarea {
-    outline: unset;
-    border: 0;
-}
-
-input, button, textarea {
-    font-family: "Nunito", sans-serif;
-    font-size: 16px;
-}
-
-main {
-    padding: 10px;
-    min-height: calc(100vh - 100px);
-    width: 900px;
-    margin: 0 auto;
-}
-
-h1 {
-    text-align: center;
-}
-
-.blackBtn {
-    padding: 5px 15px;
-    border-radius: 16px;
-    background-color: black;
-    color: white;
-    transition: .2s;
-}
-
-.blackBtn:hover {
-    background-color: rgba(1, 1, 1, 0.8)
-}
-
-.preloader {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-}
-
-@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-*:focus,
-*:active {
-    outline: none !important;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html,
-body {
-    display: grid;
-    height: 100%;
-    width: 100%;
-    font-family: "Poppins", sans-serif;
-    place-items: center;
-    background: linear-gradient(315deg, #ffffff, #d7e1ec);
 }
 
 .wrapper {
@@ -157,7 +85,6 @@ body {
 .wrapper .icon:hover .tooltip {
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
-
 
 .wrapper .add:hover,
 .wrapper .add:hover .tooltip,

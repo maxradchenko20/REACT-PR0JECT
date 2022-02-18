@@ -6,43 +6,42 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import {SimpleCtx} from "../../context/Context";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import {makeStyles} from "@material-ui/core/styles";
 import {Form} from "../Form/Form";
 import axios from "axios";
-import {AlertDialog} from "../Modal/AlertDialog";
+import {useMutation, useQuery, useQueryClient} from "react-query";
+import {deleteUser} from "../../users";
+import {getUsers} from "../../shared/queries";
+import {userContext} from "../../context/Context";
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650
   },
   pokedexContainer: {
-    paddingTop: "20px",
-    paddingLeft: "50px",
-    paddingRight: "50px",
-  },
-  cardMedia: {
-    margin: "auto",
+    paddingTop: 20,
+    paddingLeft: 50,
+    paddingRight: 50,
   },
   cardContent: {
     textAlign: "center",
   },
   searchContainer: {
     display: "flex",
-    paddingLeft: "20px",
-    paddingRight: "20px",
-    marginTop: "5px",
-    marginBottom: "5px",
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 5,
+    marginBottom: 5,
   },
   searchIcon: {
     alignSelf: "flex-end",
-    marginBottom: "5px",
+    marginBottom: 5,
   },
   searchInput: {
-    width: "200px",
-    margin: "5px",
+    width: 200,
+    margin: 5,
   },
   headerTable: {
     backgroundColor: '#000000',
@@ -85,25 +84,42 @@ const TableHeader: FC = () => {
 export const BasicTable: FC<Props> = () => {
   const classes = useStyles();
 
-  const {products, setProducts,searchValue,setOpenModal} = useContext(SimpleCtx)
+  const {users, userName, setUsers} = useContext(userContext);
 
-  const deleteTodo = (id: any, e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    axios.delete(
-      `http://localhost:4000/api/users/${id}`)
-      .then(res => {
-        console.log('deleted!!', res)
-        setOpenModal(true)
-        setProducts([...products.filter((list: { id: any; }) => list.id !== id)])
-      }).catch(err => console.log(err))
-  };
+  const client = useQueryClient();
 
-  // @ts-ignore
-  const filteredNames = products.filter(user => {
-    return user.name.toLowerCase().includes(searchValue.toLowerCase())
+  useQuery('get-users', getUsers, {
+    onSuccess: (data) => {
+      setUsers(data.data)
+    }
+  });
 
+  const deleteMutation = useMutation('delete', deleteUser, {
+    onSuccess: () => {
+      client.invalidateQueries('get-users');
+    }
   })
 
+  //Delete list
+  // const deleteTodo = (id: any, e: { preventDefault: () => void; }) => {
+  //   e.preventDefault();
+  //   axios.delete(
+  //     `/api/users/${id}`)
+  //     .then(res => {
+  //       console.log('deleted!!', res)
+  //       // setOpenModal(true)
+  //       setProducts([...products.filter((list: { id: any; }) => list.id !== id)])
+  //     }).catch(err => console.log(err))
+  // };
+
+  const deleteHandler = (id: string) => () => {
+    console.log(id);
+    deleteMutation.mutate(id);
+  }
+
+  const filteredNames = users.filter((user: any) => {
+    return user?.name?.toLowerCase().includes(userName.toLowerCase())
+  })
 
   return (
     <>
@@ -113,8 +129,7 @@ export const BasicTable: FC<Props> = () => {
           <Table className={classes.table} aria-label="simple table">
             <TableHeader/>
             <TableBody>
-              {/*@ts-ignore*/}
-              {filteredNames.map((elem) => (
+              {filteredNames.map((elem: any) => (
                 <TableRow key={elem.id}>
                   <TableCell align="right">{elem.id}</TableCell>
                   <TableCell align="right">{elem.name}</TableCell>
@@ -123,9 +138,11 @@ export const BasicTable: FC<Props> = () => {
                   <TableCell align="right">{elem.website}</TableCell>
                   <TableCell align="right">
                     {/*<a href=""> <EditIcon/></a>*/}
-                    <AlertDialog/>
+                    {/*<AlertDialog/>*/}
 
-                    <button onClick={(e) => deleteTodo(elem.id, e)}><DeleteOutlineIcon style={{color: 'red'}}/></button>
+                    <button onClick={deleteHandler(elem.id)}>
+                      <DeleteOutlineIcon/>
+                    </button>
                     {/*<button onClick={() => removeTask(elem.id)}><DeleteOutlineIcon style={{color: 'red'}}/></button>*/}
                   </TableCell>
                 </TableRow>

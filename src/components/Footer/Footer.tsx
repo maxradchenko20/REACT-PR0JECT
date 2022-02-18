@@ -8,7 +8,7 @@ type FooterProps = {
 
 const useClasses = makeStyles({
   footer: {
-    height: '50px',
+    height: 50,
     backgroundColor: '#393939',
     display: 'flex',
     alignItems: 'center',
@@ -16,7 +16,7 @@ const useClasses = makeStyles({
     '& span': {
       verticalAlign: 'middle',
       fontWeight: 400,
-      fontSize: '18px',
+      fontSize: 18,
       color: 'white',
     }
   }

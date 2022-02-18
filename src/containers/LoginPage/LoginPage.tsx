@@ -1,10 +1,10 @@
 import * as React from 'react';
+import {useContext} from 'react';
 import * as yup from "yup";
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useContext} from 'react';
 import {useHistory} from "react-router";
 import {Controller, useForm} from "react-hook-form";
-import {SimpleCtx} from "../../context/Context";
+import {userContext} from "../../context/Context";
 
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -14,7 +14,7 @@ import {makeStyles} from '@material-ui/core/styles';
 const useClasses = makeStyles({
   loginForm: {
     width: 'max-content',
-    padding: '20px',
+    padding: 20,
     margin: '0 auto',
     textAlign: 'center',
   }
@@ -31,11 +31,15 @@ const defaultValues = {
   email: "",
   password: "",
 }
+export
 
-export const LoginPage = () => {
+ const LoginPage = () => {
   const {loginForm} = useClasses();
 
-  const {setIsLoggedIn, setUserName} = useContext(SimpleCtx)
+  const {setIsLoggedIn, setUserName} = useContext(userContext)
+
+
+
 
   const history = useHistory()
 
@@ -105,3 +109,5 @@ export const LoginPage = () => {
     </>
   );
 };
+
+export default {LoginPage};

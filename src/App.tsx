@@ -1,14 +1,12 @@
 import React, {useState} from "react";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
-import {getItLocalStorage, SimpleCtx} from "./context/Context";
+import {getItLocalStorage, userContext} from "./context/Context";
 import {Footer} from "./components/Footer/Footer";
 import {Header} from "./components/Header/Header";
 import {publicRoutes} from "./components/router/publicRoutes";
 import {privateRoutes} from "./components/router/privateRoutes";
 import {error} from "./components/router/errorRoutes";
 import {User} from "../utils/State";
-import axios from "axios";
-import {useQuery} from "react-query";
 
 
 export function App() {
@@ -16,13 +14,11 @@ export function App() {
     getItLocalStorage("isLoggedIn") === "true"
   );
   const [userName, setUserName] = useState(getItLocalStorage("userName"));
-  const [products, setProducts] = useState<Array<User>>([]);
-  const [searchValue, setSearchValue] = useState('')
-  const [openModal, setOpenModal] = useState(false);
+  const [users, setUsers] = useState<Array<User>>([]);
 
   return (
-    <SimpleCtx.Provider
-      value={{isLoggedIn, setIsLoggedIn, userName, setUserName, products, setProducts, searchValue, setSearchValue,openModal, setOpenModal}}>
+    <userContext.Provider
+      value={{isLoggedIn, setIsLoggedIn, userName, setUserName, users, setUsers}}>
       <Router>
         <>
           <Header/>
@@ -76,6 +72,6 @@ export function App() {
           <Footer year={new Date().getFullYear()}/>
         </>
       </Router>
-    </SimpleCtx.Provider>
+    </userContext.Provider>
   );
 }

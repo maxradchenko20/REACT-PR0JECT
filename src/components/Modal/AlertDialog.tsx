@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useContext, useRef} from 'react';
+import {useState, useRef} from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -7,11 +7,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import {SimpleCtx} from "../../context/Context";
+
 
 
 export const AlertDialog = () => {
-  const {openModal, setOpenModal,} = useContext(SimpleCtx)
+  const [openModal, setOpenModal] = useState(false);
 
   let btnRef = useRef<HTMLButtonElement>(null);
 

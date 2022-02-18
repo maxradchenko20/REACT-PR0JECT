@@ -1,6 +1,6 @@
 import {useContext} from "react";
 import {NavLink} from "react-router-dom";
-import {SimpleCtx} from "../../context/Context";
+import {userContext} from "../../context/Context";
 
 import {makeStyles} from "@material-ui/core/styles";
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
@@ -11,9 +11,9 @@ const removeItLocalStorage = (key: string): void => localStorage.removeItem(key)
 const useClasses = makeStyles({
   header: {
     textAlign: 'center',
-    padding: '10px',
+    padding: 10,
     boxShadow: 'rgb(204 204 204) 0px 2px 10px',
-    height: '60px',
+    height: 61,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -25,7 +25,7 @@ const useClasses = makeStyles({
     '& a': {
       transition: 'all .2s linear',
       borderBottom: '2px solid transparent',
-      fontSize: '18px',
+      fontSize: 18,
       margin: '0 10px',
       display: 'flex',
       alignItems: 'center',
@@ -46,7 +46,7 @@ export const Header = () => {
 
   const {header} = useClasses();
 
-  const {isLoggedIn, setIsLoggedIn, userName} = useContext(SimpleCtx)
+  const {isLoggedIn, setIsLoggedIn, userName} = useContext(userContext)
 
   const handleLogOut = () => {
     removeItLocalStorage('isLoggedIn')

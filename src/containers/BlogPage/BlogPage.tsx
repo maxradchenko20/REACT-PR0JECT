@@ -1,13 +1,9 @@
 import * as React from "react";
-import {useContext} from "react";
 import {BasicTable} from "../../components/Table/Table";
-import {SimpleCtx} from "../../context/Context";
 import {GetData} from "../../shared/queries";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@mui/material/Alert";
-import axios from "axios";
-
 
 export const BlogPage: React.FC = () => {
 
@@ -26,9 +22,6 @@ export const BlogPage: React.FC = () => {
       </Alert>
     )
   }
-
-
-
 
   return (
     <div className='blogPage'>

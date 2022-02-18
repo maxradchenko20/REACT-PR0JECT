@@ -1,8 +1,9 @@
 import axios from "axios";
 import * as React from "react";
 import {useContext} from "react";
-import {SimpleCtx} from "../context/Context";
+
 import {useQuery} from "react-query";
+import {userContext} from "../context/Context";
 
 export const URL = 'http://localhost:4000/api';
 
@@ -18,22 +19,16 @@ export const getUsers = () => {
 
 // GET DATA
 export const GetData = () => {
-  const {setProducts} = useContext(SimpleCtx)
-
-  // const getUsersMutation = useMutation('get-users', getUsers, {
-  //   onSuccess: data => {}
-  // });
-  //
-  // useEffect(() => {
-  //   getUsersMutation.mutate();
-  // }, [])
+  const {setUsers, users} = useContext(userContext);
 
   return useQuery('get-users', getUsers, {
     onSuccess: (data) => {
-      setProducts(data.data)
+      setUsers(data.data)
+      console.log('users>>>>', users)
     }
   })
 }
+
 
 //DELETE
 
