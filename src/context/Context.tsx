@@ -7,6 +7,8 @@ export const initialContext = {
   setUserName: Function,
   users: [],
   setUsers: Function,
+  searchValue: "",
+  setSearchValue: Function
 };
 
 export type AppContextType = {
@@ -15,7 +17,10 @@ export type AppContextType = {
   userName: any;
   setUserName: <T>(T: string) => any;
   users: any,
-  setUsers: <T>(T: any) => any
+  setUsers: <T>(T: any) => any,
+  searchValue: any,
+  setSearchValue: <T>(T: any) => any
+
 }
 
 export const userContext = createContext<AppContextType>(initialContext);

@@ -24,7 +24,6 @@ export const GetData = () => {
   return useQuery('get-users', getUsers, {
     onSuccess: (data) => {
       setUsers(data.data)
-      console.log('users>>>>', users)
     }
   })
 }

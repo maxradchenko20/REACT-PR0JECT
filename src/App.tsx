@@ -10,68 +10,69 @@ import {User} from "../utils/State";
 
 
 export function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    getItLocalStorage("isLoggedIn") === "true"
-  );
-  const [userName, setUserName] = useState(getItLocalStorage("userName"));
-  const [users, setUsers] = useState<Array<User>>([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(
+        getItLocalStorage("isLoggedIn") === "true"
+    );
+    const [userName, setUserName] = useState(getItLocalStorage("userName"));
+    const [users, setUsers] = useState<Array<User>>([]);
 
-  return (
-    <userContext.Provider
-      value={{isLoggedIn, setIsLoggedIn, userName, setUserName, users, setUsers}}>
-      <Router>
-        <>
-          <Header/>
-          <main>
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={() => {
-                  if (isLoggedIn) return <Redirect to="/blog"/>;
-                  return <Redirect to="/login"/>;
-                }}
-              />
+    const [searchValue, setSearchValue] = useState('')
 
-              {publicRoutes.map(({
-                                   component: Component,
-                                   ...route
-                                 }) => <Route
-                {...route}
-                // @ts-ignore
-                render={(...props) => <Component {...props} />}/>)}
+    return (
+        <userContext.Provider
+            value={{isLoggedIn, setIsLoggedIn, userName, setUserName, users, setUsers, searchValue, setSearchValue}}>
+            <Router>
+                <>
+                    <Header/>
+                    <main>
+                        <Switch>
+                            <Route
+                                exact
+                                path="/"
+                                render={() => {
+                                    if (isLoggedIn) return <Redirect to="/users"/>;
+                                    return <Redirect to="/login"/>;
+                                }}
+                            />
 
-              {privateRoutes.map(({
-                                    component: Component,
-                                    ...route
-                                  }) => <Route
-                {...route}
-                // @ts-ignore
-                render={(...props) => <Component {...props} />}/>)}
+                            {publicRoutes.map(({
+                                                   component: Component,
+                                                   ...route
+                                               }) => <Route
+                                {...route}
+                                // @ts-ignore
+                                render={(...props) => <Component {...props} />}/>)}
 
-              {error.map(({
-                            component: Component,
-                            ...route
-                          }) => <Route
-                {...route}
-                // @ts-ignore
-                render={(...props) => <Component {...props} />}/>)}
+                            {privateRoutes.map(({
+                                                    component: Component,
+                                                    ...route
+                                                }) => <Route
+                                {...route}
+                                // @ts-ignore
+                                render={(...props) => <Component {...props} />}/>)}
 
+                            {error.map(({
+                                            component: Component,
+                                            ...route
+                                        }) => <Route
+                                {...route}
+                                // @ts-ignore
+                                render={(...props) => <Component {...props} />}/>)}
 
-              <Route path="*"
-                     render={({location}) => {
-                       return <Redirect to={{
-                         pathname: '/404',
-                         // @ts-ignore
-                         from: location
-                       }}/>
-                     }}
-              />
-            </Switch>
-          </main>
-          <Footer year={new Date().getFullYear()}/>
-        </>
-      </Router>
-    </userContext.Provider>
-  );
+                            <Route path="*"
+                                   render={({location}) => {
+                                       return <Redirect to={{
+                                           pathname: '/404',
+                                           // @ts-ignore
+                                           from: location
+                                       }}/>
+                                   }}
+                            />
+                        </Switch>
+                    </main>
+                    <Footer year={new Date().getFullYear()}/>
+                </>
+            </Router>
+        </userContext.Provider>
+    );
 }

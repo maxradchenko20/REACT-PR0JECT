@@ -9,5 +9,6 @@ export const publicRoutes: RouteProps[] = [
     path: LOGIN,
     component: LoginPage,
     exact: true
-  }
+  },
+
 ]
