@@ -1,5 +1,6 @@
 import {createContext} from "react";
 
+
 export const initialContext = {
   isLoggedIn: false,
   setIsLoggedIn: Function,
@@ -12,21 +13,17 @@ export const initialContext = {
 };
 
 export type AppContextType = {
-  isLoggedIn: any;
+  isLoggedIn: boolean;
   setIsLoggedIn: <U>(U: any) => void
   userName: any;
   setUserName: <T>(T: string) => any;
   users: any,
   setUsers: <T>(T: any) => any,
-  searchValue: any,
-  setSearchValue: <T>(T: any) => any
-
 }
 
 export const userContext = createContext<AppContextType>(initialContext);
 
 export const getItLocalStorage = (key: string): (string | null) => localStorage.getItem(key);
-
 
 
 

@@ -1,7 +1,7 @@
 import {RouteProps} from "react-router-dom";
-import {BlogPage} from "../../containers/BlogPage/BlogPage";
+import BlogPage from "../../containers/BlogPage";
 import {ROUTE} from "./ROUTES";
-import AddUser from "../addUser/AddUser";
+import AddUser from "../../containers/addUser/";
 
 const {USERS, USERS_ADD} = ROUTE
 

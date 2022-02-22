@@ -1,13 +1,15 @@
-import React, {FC, useContext, useEffect, useState} from "react";
-import axios from 'axios';
+import React, {FC, useContext} from "react";
 import * as yup from "yup";
 import {useForm} from "react-hook-form";
 import {Link} from 'react-router-dom';
+import {useMutation} from "react-query";
+import {searchUser} from "../../api";
+import Input from "../Input";
 import {yupResolver} from "@hookform/resolvers/yup";
-import SearchIcon from "@material-ui/icons/Search";
+import {FormInputs} from "../../utils/types";
+import {userContext} from "../../context/Context";
 import {makeStyles} from "@material-ui/core/styles";
 import {AppBar, Toolbar,} from "@material-ui/core";
-import {userContext} from "../../context/Context";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import IconButton from "@material-ui/core/IconButton";
@@ -15,107 +17,68 @@ import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 
 import '../../index.css'
 
+
 const useClasses = makeStyles({
-    table: {
-        minWidth: 650
-    },
-    pokedexContainer: {
-        paddingTop: 20,
-        paddingLeft: 50,
-        paddingRight: 50,
-    },
-    cardMedia: {
-        margin: "auto",
-    },
-    cardContent: {
-        textAlign: "center",
-    },
-    searchContainer: {
-        display: "flex",
-        paddingLeft: 20,
-        paddingRight: 20,
-        marginTop: 5,
-        marginBottom: 5,
-        width: '100%',
-    },
-    searchIcon: {
-        alignSelf: "flex-end",
-        marginBottom: 5,
-    },
-    searchInput: {
-        width: 300,
-        margin: 5,
-    },
-    form: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    form_children: {
-        display: 'flex',
-        alignItems: 'center'
-    },
+  table: {
+    minWidth: 650
+  },
+  searchContainer: {
+    display: "flex",
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 5,
+    marginBottom: 5,
+    width: '100%',
+  },
 });
-
-export interface IFormInputs {
-    username: string;
-    name?: string;
-    email?: string;
-    website?: string;
-    id?: any;
-
-}
 
 const schema = yup.object().shape({
-    userName: yup.string().required(),
+  name: yup.string().required(),
 });
 
-
 export const FormSearch: FC = () => {
+  const classes = useClasses();
+  const {setUsers} = useContext(userContext);
 
-    const classes = useClasses();
+  const form = useForm<FormInputs>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      name: ''
+    }
+  })
 
+  const searchUserMutation = useMutation('search-by-name', searchUser, {
+    onSuccess: (data) => {
+      setUsers(data.data)
+    }
+  });
 
-    //FORM
-    const form = useForm<IFormInputs>({
-        resolver: yupResolver(schema),
-        defaultValues: {
-            username: ''
-        }
-    })
+  const onSubmit = (data: any) => {
+    searchUserMutation.mutate(data.name.toLowerCase());
+  }
 
-
-    // const searchUserMutation = useMutation('get-user', getUsers, {
-    //     onSuccess: (data) => {
-    //         setUsers(data.data);
-    //         console.log(data.data)
-    //     }
-    // });
-
-    // const onSubmit: SubmitHandler<IFormInputs> = (data: any) => {
-    //     searchUserMutation.mutate(data.userName);
-    // }
-
-
-    return (
-        <AppBar position="static">
-            <Toolbar>
-                <div className={classes.searchContainer}>
-                    <form className={classes.form}>
-                        <div className={classes.form_children}>
-                            <SearchIcon className={classes.searchIcon}/>
-                            {/*<Controller control={form.control} name="userName" render={({field}) => {*/}
-                            {/*    return <TextField {...field} label="Search by name..."/>*/}
-                            {/*}}/>*/}
-                            {/*<MyInput control={form.control} name="userName" label="Search by name..."/>*/}
-
-
-
-                        </div>
-                    </form>
-                </div>
-            </Toolbar>
-        </AppBar>
-    )
+  return (
+    <AppBar position="static">
+      <Toolbar>
+        <div className={classes.searchContainer}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <Input control={form.control}
+                   name="name"
+                   type="text"
+                   label="name"/>
+            <Button type="submit" variant="contained" endIcon={<SendIcon/>}
+                    onClick={() => searchUserMutation}>
+              Search
+            </Button>
+            <Link to="/users/new-user">
+              <IconButton size="medium" type="submit">
+                <PersonAddAltIcon color="error" fontSize="inherit"/>
+                Add user
+              </IconButton>
+            </Link>
+          </form>
+        </div>
+      </Toolbar>
+    </AppBar>
+  )
 }

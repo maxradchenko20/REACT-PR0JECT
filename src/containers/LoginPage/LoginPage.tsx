@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useContext} from 'react';
+import {FC, useContext} from 'react';
 import * as yup from "yup";
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useHistory} from "react-router";
@@ -31,21 +31,19 @@ const defaultValues = {
   email: "",
   password: "",
 }
-export
 
- const LoginPage = () => {
+
+ const LoginPage: FC = () => {
   const {loginForm} = useClasses();
 
   const {setIsLoggedIn, setUserName} = useContext(userContext)
-
-
-
 
   const history = useHistory()
 
   const form = useForm({
     resolver: yupResolver(schema), defaultValues
   });
+
   const handleLogIn = (formData: any) => {
     setItLocalStorage('isLoggedIn', true)
 
@@ -110,4 +108,4 @@ export
   );
 };
 
-export default {LoginPage};
+export default LoginPage;

@@ -1,5 +1,5 @@
 import {RouteProps} from "react-router-dom";
-import {LoginPage} from "../../containers/LoginPage/LoginPage";
+import LoginPage from "../../containers/LoginPage/LoginPage";
 import {ROUTE} from "./ROUTES";
 
 const {LOGIN} = ROUTE

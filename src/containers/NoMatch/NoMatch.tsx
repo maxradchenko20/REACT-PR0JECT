@@ -5,7 +5,7 @@ import {ROUTE} from "../../components/router/ROUTES";
 import {Result} from 'antd';
 import Button from '@mui/material/Button';
 
-export const NoMatch = () => {
+ const NoMatch = () => {
   const location = useLocation();
   const history = useHistory();
   console.log('location  >>>>', location);
@@ -31,3 +31,5 @@ export const NoMatch = () => {
     </div>
   );
 };
+
+export default NoMatch;

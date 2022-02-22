@@ -42,7 +42,7 @@ const useClasses = makeStyles({
 
 })
 
-export const Header = () => {
+ const Header = () => {
 
   const {header} = useClasses();
 
@@ -74,3 +74,5 @@ export const Header = () => {
     </header>
   );
 };
+
+export default Header;
