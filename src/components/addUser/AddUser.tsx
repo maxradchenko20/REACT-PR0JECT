@@ -9,7 +9,7 @@ import {Controller, useForm} from "react-hook-form";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import Container from '@mui/material/Container';
 
-import {IFormInputs} from "../Form/Form";
+import {IFormInputs} from "../Form/FormSearch";
 import {TextField} from "@material-ui/core";
 import {FieldPath} from "react-hook-form/dist/types/path/eager";
 import {Control} from "react-hook-form/dist/types";
@@ -23,6 +23,7 @@ const schema = yup.object().shape({
     email: yup.string().email('invalid email').required('required'),
     website: yup.string().required('required'),
 
+
 });
 
 type MyInputProps = {
@@ -32,6 +33,9 @@ type MyInputProps = {
     props?: any,
     error?: FieldErrors<any>,
     helperText?: any,
+    type?: string,
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => any,
+    // value?: any,
 }
 
 const useClasses = makeStyles({
@@ -54,7 +58,7 @@ const AddUser: FC = () => {
         resolver: yupResolver(schema),
         defaultValues: {
             name: '',
-            userName: '',
+            username: '',
             email: '',
             website: '',
         }
@@ -83,8 +87,8 @@ const AddUser: FC = () => {
                              name="name"
                              label="name"/><br/>
                     <MyInput control={form.control}
-                             error={!!form.formState.errors.userName}
-                             helperText={form.formState.errors.userName ? form.formState.errors.userName?.message : ''}
+                             error={!!form.formState.errors.username}
+                             helperText={form.formState.errors.username ? form.formState.errors.username?.message : ''}
                              name="userName"
                              label="userName"/><br/>
                     <MyInput control={form.control}

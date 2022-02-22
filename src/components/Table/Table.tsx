@@ -1,4 +1,4 @@
-import React, {FC, useContext} from "react";
+import React, {FC, useContext, useEffect, useRef, useState} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -7,12 +7,21 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import {Form} from "../Form/Form";
 import axios from "axios";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {getUsers} from "../../shared/queries";
+import {deleteUser, searchUser} from "../../api";
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
+import {MyInput} from "../addUser/AddUser";
+import {useForm} from "react-hook-form";
+import {IFormInputs} from "../Form/FormSearch";
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup";
+import * as yup from "yup";
+import {Link} from "react-router-dom";
+import IconButton from "@material-ui/core/IconButton";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import {userContext} from "../../context/Context";
-import {deleteUser} from "../../api";
 
 // const useStyles = makeStyles({
 //     table: {
@@ -74,61 +83,76 @@ const TableHeader: FC = () => {
     )
 }
 
-// type Props = {
-//   deleteTodo: (id: any, e: React.MouseEvent<HTMLButtonElement>) => any
-// }
 
-// @ts-ignore
-export const BasicTable: FC<Props> = () => {
-    // const classes = useStyles();
-
-    const {users, setUsers, searchValue} = useContext(userContext);
-
+export const BasicTable: FC = () => {
     const client = useQueryClient();
 
-    useQuery('get-users', getUsers, {
-        onSuccess: (data) => {
-            setUsers(data.data)
-        }
-    });
-
-    const deleteMutation = useMutation('delete', deleteUser, {
+    const deleteMutation = useMutation('delete-user', deleteUser, {
         onSuccess: () => {
             client.invalidateQueries('get-users');
         }
     })
-
-    //Delete list
-    // const deleteTodo = (id: any, e: { preventDefault: () => void; }) => {
-    //   e.preventDefault();
-    //   axios.delete(
-    //     `/api/users/${id}`)
-    //     .then(res => {
-    //       console.log('deleted!!', res)
-    //       // setOpenModal(true)
-    //       setProducts([...products.filter((list: { id: any; }) => list.id !== id)])
-    //     }).catch(err => console.log(err))
-    // };
 
     const deleteHandler = (id: string) => () => {
         console.log(id);
         deleteMutation.mutate(id);
     }
 
+    const {setUsers, users, userName} = useContext(userContext);
 
-    const filteredNames = users.filter((user: any) => {
-        return user?.name?.toLowerCase().includes(searchValue.toLowerCase())
+    const [userNameSearch, setUserNameSearch] = useState('');
+
+    const searchUserMutation = useMutation('search-by-name', searchUser, {
+        onSuccess: (data) => {
+            setUsers(data.data)
+        }
+    });
+
+    const onSubmit = (data: any) => {
+        searchUserMutation.mutate(data.name);
+    }
+
+    const filteredNames = users.map((user: any) => {
+        return user?.name?.toLowerCase().includes(userNameSearch.toLowerCase())
+    })
+
+    const schema = yup.object().shape({
+        name: yup.string().required(),
+    });
+
+
+    const form = useForm<IFormInputs>({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            name: ''
+        }
     })
 
     return (
         <>
             <Paper>
-                <Form/>
                 <TableContainer>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <MyInput control={form.control}
+                                 name="name"
+                            // @ts-ignore
+                                 type="text"
+                                 label="name"/>
+                        <Button type="submit" variant="contained" endIcon={<SendIcon/>}
+                                onClick={() => searchUserMutation}>
+                            Search
+                        </Button>
+                        <Link to="/users/new-user">
+                            <IconButton size="medium" type="submit">
+                                <PersonAddAltIcon color="error" fontSize="inherit"/>
+                                Add user
+                            </IconButton>
+                        </Link>
+                    </form>
                     <Table style={{minWidth: 650}} aria-label="simple table">
                         <TableHeader/>
                         <TableBody>
-                            {filteredNames.map((user: any) => (
+                            {users.map((user: any) => (
                                 <TableRow key={user.id}>
                                     <TableCell align="right">{user.id}</TableCell>
                                     <TableCell align="right">{user.name}</TableCell>

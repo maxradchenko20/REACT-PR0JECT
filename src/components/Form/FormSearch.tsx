@@ -1,17 +1,15 @@
-import React, {FC, useContext} from "react";
+import React, {FC, useContext, useEffect, useState} from "react";
+import axios from 'axios';
 import * as yup from "yup";
-import {SubmitHandler, useForm} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import {Link} from 'react-router-dom';
 import {yupResolver} from "@hookform/resolvers/yup";
 import SearchIcon from "@material-ui/icons/Search";
 import {makeStyles} from "@material-ui/core/styles";
 import {AppBar, Toolbar,} from "@material-ui/core";
-import {useMutation} from "react-query";
-import {getUsers} from "../../shared/queries";
 import {userContext} from "../../context/Context";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
-import {MyInput} from "../addUser/AddUser";
 import IconButton from "@material-ui/core/IconButton";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 
@@ -61,11 +59,12 @@ const useClasses = makeStyles({
 });
 
 export interface IFormInputs {
-    userName: string;
+    username: string;
     name?: string;
     email?: string;
     website?: string;
     id?: any;
+
 }
 
 const schema = yup.object().shape({
@@ -73,52 +72,47 @@ const schema = yup.object().shape({
 });
 
 
-export const Form: FC = () => {
-    const {setUsers} = useContext(userContext);
+export const FormSearch: FC = () => {
 
     const classes = useClasses();
+
 
     //FORM
     const form = useForm<IFormInputs>({
         resolver: yupResolver(schema),
         defaultValues: {
-            userName: ''
+            username: ''
         }
-    });
+    })
 
 
-    const searchUserMutation = useMutation('get-user', getUsers, {
-        onSuccess: (data) => {
-            setUsers(data.data);
-            console.log(data.data)
-        }
-    });
+    // const searchUserMutation = useMutation('get-user', getUsers, {
+    //     onSuccess: (data) => {
+    //         setUsers(data.data);
+    //         console.log(data.data)
+    //     }
+    // });
 
-    const onSubmit: SubmitHandler<IFormInputs> = (data: any) => {
-        searchUserMutation.mutate(data.userName);
-    }
+    // const onSubmit: SubmitHandler<IFormInputs> = (data: any) => {
+    //     searchUserMutation.mutate(data.userName);
+    // }
+
 
     return (
         <AppBar position="static">
             <Toolbar>
                 <div className={classes.searchContainer}>
-                    <form className={classes.form} onSubmit={form.handleSubmit(onSubmit)}>
+                    <form className={classes.form}>
                         <div className={classes.form_children}>
                             <SearchIcon className={classes.searchIcon}/>
                             {/*<Controller control={form.control} name="userName" render={({field}) => {*/}
                             {/*    return <TextField {...field} label="Search by name..."/>*/}
                             {/*}}/>*/}
-                            <MyInput control={form.control} name="userName" label="Search by name..."/>
-                            <Button variant="contained" endIcon={<SendIcon/>}>
-                                Send
-                            </Button>
+                            {/*<MyInput control={form.control} name="userName" label="Search by name..."/>*/}
+
+
+
                         </div>
-                        <Link to="/users/new-user">
-                            <IconButton size="medium" type="submit">
-                                <PersonAddAltIcon color="error" fontSize="inherit"/>
-                                Add user
-                            </IconButton>
-                        </Link>
                     </form>
                 </div>
             </Toolbar>

@@ -7,30 +7,30 @@ import Alert from "@mui/material/Alert";
 
 export const BlogPage: React.FC = () => {
 
-  const {isLoading, isError, error, isFetching} = GetData();
+    const {isLoading, isError, error, isFetching} = GetData();
 
-  //Loader
-  if (isLoading) return <CircularProgress/>;
+    //Loader
+    if (isLoading) return <CircularProgress/>;
 
 //Error
-  if (isError) {
+    if (isError) {
+
+        return (
+            <Alert variant="filled" severity="error">
+                {/*@ts-ignore*/}
+                {error.message}
+            </Alert>
+        )
+    }
 
     return (
-      <Alert variant="filled" severity="error">
-        {/*@ts-ignore*/}
-        {error.message}
-      </Alert>
-    )
-  }
-
-  return (
-    <div className='blogPage'>
-      <h3>Users list </h3>
-      {/*<Form/>*/}
-      <br/>
-      <BasicTable/>
-      {isFetching && <CircularProgress className='preloader'/>}
-    </div>
-  );
+        <div className='blogPage'>
+            <h3>Users list </h3>
+            {/*<FormSearch/>*/}
+            <br/>
+            <BasicTable/>
+            {isFetching && <CircularProgress className='preloader'/>}
+        </div>
+    );
 }
 
