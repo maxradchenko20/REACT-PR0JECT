@@ -1,17 +1,16 @@
-import axios from "axios";
-import { INewUser } from "../containers/AddUser/AddUser";
+import axios from 'axios';
+import { FormInputs } from '../utils/types';
 
-const URL = "http://localhost:4000/api";
-const BASE_NAME = "/users/";
+const URL = 'http://localhost:4000/api';
+const BASE_NAME = '/users/';
 
 axios.defaults.baseURL = URL;
 axios.defaults.headers = {
-  "Access-Control-Allow-Origin": "*",
+  'Access-Control-Allow-Origin': '*'
 };
 
-// GET
 export const getUsers = () => {
-  return axios.get("/users");
+  return axios.get('/users');
 };
 
 export const deleteUser = (id: string) => {
@@ -22,6 +21,6 @@ export const searchUser = (name: string) => {
   return axios.get(`http://localhost:4000/api/users?name=${name}`);
 };
 
-export const createNewUser = (data: INewUser) => {
-  return axios.post(`https://jsonplaceholder.typicode.com/users`, data);
+export const createNewUser = (data: FormInputs) => {
+  return axios.post(`http://localhost:4000/api/users`, data);
 };

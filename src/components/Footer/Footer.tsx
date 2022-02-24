@@ -1,10 +1,10 @@
-import {FC} from "react";
+import { FC } from 'react';
 
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 type Props = {
-  year: number
-}
+  year: number;
+};
 
 const useClasses = makeStyles({
   footer: {
@@ -21,14 +21,13 @@ const useClasses = makeStyles({
       verticalAlign: 'middle',
       fontWeight: 400,
       fontSize: 18,
-      color: 'white',
+      color: 'white'
     }
   }
-})
+});
 
-const Footer: FC<Props> = ({year}) => {
-
-  const {footer} = useClasses();
+const Footer: FC<Props> = ({ year }) => {
+  const { footer } = useClasses();
 
   return (
     <footer className={footer}>

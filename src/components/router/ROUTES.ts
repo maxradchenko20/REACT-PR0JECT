@@ -3,8 +3,5 @@ export enum ROUTE {
   LOGIN = '/login',
   USERS = '/users',
   USERS_ADD = '/users/new-user',
-  ERROR = `/404`,
+  ERROR = `/404`
 }
-
-
-

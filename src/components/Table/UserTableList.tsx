@@ -1,45 +1,31 @@
-import React, { FC, useContext } from "react";
-import { FormSearch } from "../Form/FormSearch";
-import { userContext } from "../../context/Context";
-import TableRows from "./TableHeaderRows";
+import React, { FC, useContext } from 'react';
+import { userContext } from '../../context/Context';
+import { useMutation, useQueryClient } from 'react-query';
 
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import Alert from "@mui/material/Alert";
-import { useMutation, useQueryClient } from "react-query";
-import { deleteUser } from "../../api";
-import { AlertTitle, Box, LinearProgress, Table } from "@mui/material";
+import TableRows from './TableHeaderRows';
+import ErrorNoUser from '../Error';
+import { deleteUser } from '../../api';
+import FormSearch from '../FormSearch';
+
+import { Paper, TableBody, TableContainer, TableRow } from '@material-ui/core';
+import TableCell from '@material-ui/core/TableCell';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Table } from '@mui/material';
 
 const UserTableList: FC = () => {
   const client = useQueryClient();
   const { users } = useContext(userContext);
 
   //DELETE USER
-  const deleteMutation = useMutation("delete-user", deleteUser, {
+  const deleteUserMutation = useMutation('delete-user', deleteUser, {
     onSuccess: () => {
-      client.invalidateQueries("get-users");
-    },
+      client.invalidateQueries('get-users');
+    }
   });
 
   const deleteHandler = (id: string) => () => {
     console.log(id);
-    deleteMutation.mutate(id);
-  };
-
-  const ErrorNoUser = () => {
-    return (
-      <Box sx={{ width: "100%" }}>
-        <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>
-          This is an error alert — <strong>No matches found!</strong>
-        </Alert>
-        <LinearProgress />
-      </Box>
-    );
+    deleteUserMutation.mutate(id);
   };
 
   return (

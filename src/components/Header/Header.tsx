@@ -1,12 +1,13 @@
-import {useContext} from "react";
-import {NavLink} from "react-router-dom";
-import {userContext} from "../../context/Context";
+import { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
+import { userContext } from '../../context/Context';
 
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import PanToolIcon from '@mui/icons-material/PanTool';
 
-const removeItLocalStorage = (key: string): void => localStorage.removeItem(key)
+const removeItLocalStorage = (key: string): void =>
+  localStorage.removeItem(key);
 
 const useClasses = makeStyles({
   header: {
@@ -20,7 +21,7 @@ const useClasses = makeStyles({
     '& nav': {
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'center'
     },
     '& a': {
       transition: 'all .2s linear',
@@ -39,38 +40,36 @@ const useClasses = makeStyles({
     color: 'crimson',
     fontWeight: 600
   }
+});
 
-})
+const Header = () => {
+  const { header } = useClasses();
 
- const Header = () => {
-
-  const {header} = useClasses();
-
-  const {isLoggedIn, setIsLoggedIn, userName} = useContext(userContext)
+  const { isLoggedIn, setIsLoggedIn, userName } = useContext(userContext);
 
   const handleLogOut = () => {
-    removeItLocalStorage('isLoggedIn')
-    removeItLocalStorage('userName')
+    removeItLocalStorage('isLoggedIn');
+    removeItLocalStorage('userName');
     setIsLoggedIn(false);
   };
 
   return (
     <header className={header}>
-      {
-        isLoggedIn ?
-          <nav>
-            Добро пожаловать, &nbsp; <strong>{userName}</strong>
-            <NavLink
-              onClick={handleLogOut}
-              exact
-              to="/login"
-            >
-              <MeetingRoomIcon/>
-              Выход
-            </NavLink>
-          </nav>
-          : <p> Добро пожаловать <PanToolIcon color="secondary" sx={{fontSize: 20}}/></p>
-      }
+      {isLoggedIn ? (
+        <nav>
+          Добро пожаловать, &nbsp; <strong>{userName}</strong>
+          <NavLink onClick={handleLogOut} exact to="/login">
+            <MeetingRoomIcon />
+            Выход
+          </NavLink>
+        </nav>
+      ) : (
+        <p>
+          {' '}
+          Добро пожаловать{' '}
+          <PanToolIcon color="secondary" sx={{ fontSize: 20 }} />
+        </p>
+      )}
     </header>
   );
 };

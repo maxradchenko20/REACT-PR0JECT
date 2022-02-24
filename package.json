@@ -1,4 +1,13 @@
 {
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint --fix --ext ts,tsx src",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx,html,css,scss,json}\"",
+    "i18n-extract": "i18next 'src/translations/*.ts' -c i18next-parser.config.js"
+  },
   "name": "react-blog",
   "version": "0.1.0",
   "private": true,
@@ -20,11 +29,15 @@
     "@types/node": "^12.20.10",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
+    "@typescript-eslint/parser": "^5.12.1",
     "antd": "^4.16.13",
     "axios": "^0.21.1",
     "faker": "^6.6.6",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.4",
     "material-table": "^1.69.3",
     "node-sass": "^7.0.1",
+    "prettier": "^2.5.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hook-form": "^7.26.0",
@@ -36,34 +49,119 @@
     "web-vitals": "^1.1.1",
     "yup": "^0.32.11"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{html,css,scss,json}": [
+      "prettier --write"
+    ]
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+    "plugins": [
+      "unused-imports"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.ts?(x)"
+        ],
+        "rules": {
+          "react-hooks/exhaustive-deps": "off",
+          "react/self-closing-comp": "warn",
+          "no-use-before-define": "off",
+          "@typescript-eslint/no-use-before-define": [
+            "error",
+            {
+              "functions": true,
+              "classes": true,
+              "variables": true
+            }
+          ],
+          "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+              "ignoreRestSiblings": true,
+              "args": "none"
+            }
+          ],
+          "react/jsx-curly-brace-presence": [
+            "warn",
+            {
+              "props": "never"
+            }
+          ],
+          "unused-imports/no-unused-imports": "warn",
+          "no-duplicate-imports": "error",
+          "no-restricted-imports": [
+            "error",
+            {
+              "paths": [
+                "import1",
+                "import2"
+              ],
+              "patterns": [
+                "import1/private/*",
+                "import2/*",
+                "!import2/good"
+              ]
+            }
+          ],
+          "sort-imports": [
+            "error",
+            {
+              "ignoreCase": true,
+              "ignoreDeclarationSort": true,
+              "ignoreMemberSort": false,
+              "memberSyntaxSortOrder": [
+                "none",
+                "all",
+                "multiple",
+                "single"
+              ],
+              "allowSeparatedGroups": true
+            }
+          ]
+        }
+      }
     ]
   },
+  "eslintIgnore": [
+    "*.spec.tsx",
+    "*.test.tsx"
+  ],
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "development": [
+    "last 1 chrome version",
+    "last 1 firefox version",
+    "last 1 safari version"
+  ],
   "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.0",
     "@faker-js/faker": "^6.0.0-alpha.6",
     "@types/faker": "^6.6.9",
-    "@types/react-router-dom": "^5.3.3"
+    "@types/leaflet": "^1.7.6",
+    "@types/react-router-dom": "^5.3.3",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.9.0",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "prettier-eslint": "^13.0.0"
   },
   "proxy": "http://localhost:4000"
 }

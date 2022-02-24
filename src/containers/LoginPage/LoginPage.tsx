@@ -1,58 +1,55 @@
-import * as React from "react";
-import { FC, useContext } from "react";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useHistory } from "react-router";
-import { Controller, useForm } from "react-hook-form";
-import { userContext } from "../../context/Context";
+import * as React from 'react';
+import { FC, useContext } from 'react';
+import { useHistory } from 'react-router';
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { userContext } from '../../context/Context';
 
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import { Button } from "@mui/material";
-import { makeStyles } from "@material-ui/core/styles";
+import { Button, TextField, Typography } from '@mui/material';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useClasses = makeStyles({
   loginForm: {
-    width: "max-content",
+    width: 'max-content',
     padding: 20,
-    margin: "0 auto",
-    textAlign: "center",
-  },
+    margin: '0 auto',
+    textAlign: 'center'
+  }
 });
 
 const setItLocalStorage = (key: string, val: any): void =>
   localStorage.setItem(key, JSON.stringify(val));
 
 const schema = yup.object().shape({
-  email: yup.string().email("invalid email").required("required"),
-  password: yup.string().min(6, "min 6").max(20, "max").required("required"),
+  email: yup.string().email('invalid email').required('required'),
+  password: yup.string().min(6, 'min 6').max(20, 'max').required('required')
 });
 
 const defaultValues = {
-  email: "",
-  password: "",
+  email: '',
+  password: ''
 };
 
 const LoginPage: FC = () => {
+  const history = useHistory();
   const { loginForm } = useClasses();
 
   const { setIsLoggedIn, setUserName } = useContext(userContext);
 
-  const history = useHistory();
-
   const form = useForm({
     resolver: yupResolver(schema),
-    defaultValues,
+    defaultValues
   });
 
   const handleLogIn = (formData: any) => {
-    setItLocalStorage("isLoggedIn", true);
+    setItLocalStorage('isLoggedIn', true);
 
-    setItLocalStorage("userName", formData.email);
+    setItLocalStorage('userName', formData.email);
 
     setUserName(formData.email);
     setIsLoggedIn(true);
-    history.push("/");
+    history.push('/');
   };
 
   return (
@@ -78,7 +75,7 @@ const LoginPage: FC = () => {
               helperText={
                 form.formState.errors.email
                   ? form.formState.errors.email?.message
-                  : ""
+                  : ''
               }
               fullWidth
               margin="dense"
@@ -99,7 +96,7 @@ const LoginPage: FC = () => {
               helperText={
                 form.formState.errors.password
                   ? form.formState.errors.password?.message
-                  : ""
+                  : ''
               }
               fullWidth={true}
               margin="dense"
@@ -112,7 +109,7 @@ const LoginPage: FC = () => {
           fullWidth={true}
           disableElevation={true}
           sx={{
-            marginTop: 2,
+            marginTop: 2
           }}
         >
           Log

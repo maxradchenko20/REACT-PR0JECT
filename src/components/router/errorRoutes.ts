@@ -1,8 +1,8 @@
-import {RouteProps} from "react-router-dom";
-import NoMatch from "../../containers/NoMatch";
-import {ROUTE} from "./ROUTES";
+import { RouteProps } from 'react-router-dom';
+import NoMatch from '../../containers/NoMatch';
+import { ROUTE } from './ROUTES';
 
-const {ERROR} = ROUTE
+const { ERROR } = ROUTE;
 
 export const error: RouteProps[] = [
   {
@@ -10,4 +10,4 @@ export const error: RouteProps[] = [
     component: NoMatch,
     exact: true
   }
-]
+];

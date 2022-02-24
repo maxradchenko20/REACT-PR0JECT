@@ -1,32 +1,35 @@
 import React from 'react';
-import {Redirect, useHistory, useLocation} from 'react-router';
-import {ROUTE} from "../../components/router/ROUTES";
+import { Redirect, useHistory, useLocation } from 'react-router';
+import { ROUTE } from '../../components/router/ROUTES';
 
-import {Result} from 'antd';
+import { Result } from 'antd';
 import Button from '@mui/material/Button';
 
- const NoMatch = () => {
+const NoMatch = () => {
   const location = useLocation();
   const history = useHistory();
-  console.log('location  >>>>', location);
 
   const backHome = () => {
-    history.push('/')
-  }
+    history.push('/');
+  };
 
-  const {HOME} = ROUTE
+  const { HOME } = ROUTE;
 
   // @ts-ignore
-  if (!location?.from?.pathname) return <Redirect to={HOME}/>
+  if (!location?.from?.pathname) return <Redirect to={HOME} />;
 
   return (
-    <div className='page404'>
+    <div className="page404">
       <Result
-        status='404'
-        title='404'
+        status="404"
+        title="404"
         // @ts-ignore
         subTitle={`Страница ${location.from.pathname} не найдена`}
-        extra={<Button onClick={backHome} variant="contained">Вернуться на главную</Button>}
+        extra={
+          <Button onClick={backHome} variant="contained">
+            Вернуться на главную
+          </Button>
+        }
       />
     </div>
   );

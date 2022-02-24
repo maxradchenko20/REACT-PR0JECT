@@ -1,30 +1,26 @@
-import {createContext} from "react";
-
+import { createContext } from 'react';
 
 export const initialContext = {
   isLoggedIn: false,
   setIsLoggedIn: Function,
-  userName: "",
+  userName: '',
   setUserName: Function,
   users: [],
   setUsers: Function,
-  searchValue: "",
+  searchValue: '',
   setSearchValue: Function
 };
 
 export type AppContextType = {
   isLoggedIn: boolean;
-  setIsLoggedIn: <U>(U: any) => void
+  setIsLoggedIn: <U>(U: any) => void;
   userName: any;
   setUserName: <T>(T: string) => any;
-  users: any,
-  setUsers: <T>(T: any) => any,
-}
+  users: any;
+  setUsers: <T>(T: any) => any;
+};
 
 export const userContext = createContext<AppContextType>(initialContext);
 
-export const getItLocalStorage = (key: string): (string | null) => localStorage.getItem(key);
-
-
-
-
+export const getItLocalStorage = (key: string): string | null =>
+  localStorage.getItem(key);
