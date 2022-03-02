@@ -1,13 +1,12 @@
-import React from 'react';
-import { Control } from 'react-hook-form/dist/types';
-import { FieldPath } from 'react-hook-form/dist/types/path/eager';
-import { FieldErrors } from 'react-hook-form/dist/types/errors';
+import React from "react";
+import { Control } from "react-hook-form/dist/types";
+import { FieldPath } from "react-hook-form/dist/types/path/eager";
+import { FieldErrors } from "react-hook-form/dist/types/errors";
 
 export type User = {
-  id: string;
+  id?: string;
   name: string;
   email: string;
-  phone: string;
   username: string;
   website: string;
 };

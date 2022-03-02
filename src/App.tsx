@@ -1,25 +1,25 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState } from "react";
 import {
   Redirect,
   Route,
   BrowserRouter as Router,
   Switch
-} from 'react-router-dom';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import { getItLocalStorage, userContext } from './context/Context';
-import { publicRoutes } from './components/router/publicRoutes';
-import { privateRoutes } from './components/router/privateRoutes';
-import { error } from './components/router/errorRoutes';
-import { User } from './utils/types';
+} from "react-router-dom";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import { getItLocalStorage, userContext } from "./context/Context";
+import { publicRoutes } from "./components/router/publicRoutes";
+import { privateRoutes } from "./components/router/privateRoutes";
+import { error } from "./components/router/errorRoutes";
+import { User } from "./utils/types";
 
 export const App: FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(
-    getItLocalStorage('isLoggedIn') === 'true'
+    getItLocalStorage("isLoggedIn") === "true"
   );
-  const [userName, setUserName] = useState(getItLocalStorage('userName'));
+  const [userName, setUserName] = useState(getItLocalStorage("userName"));
   const [users, setUsers] = useState<Array<User>>([]);
-
+  
   return (
     <userContext.Provider
       value={{
@@ -75,7 +75,7 @@ export const App: FC = () => {
                   return (
                     <Redirect
                       to={{
-                        pathname: '/404',
+                        pathname: "/404",
                         // @ts-ignore
                         from: location
                       }}

@@ -1,56 +1,58 @@
-import React, { FC, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router';
-import { useMutation } from 'react-query';
-import { userContext } from '../../context/Context';
-import { FormInputs } from '../../utils/types';
-import { createNewUser } from '../../api';
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import { schema } from 'utils/validator';
+import React, { FC, useContext } from "react";
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router";
+import { useMutation } from "react-query";
+import { userContext } from "../../context/Context";
+import { User } from "../../utils/types";
+import { createNewUser } from "../../api";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import { schema } from "utils/validator";
 
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import { Container } from '@mui/material';
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@mui/material/Typography';
-import Input from '../../components/Input';
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import { Container } from "@mui/material";
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@mui/material/Typography";
+import Input from "../../components/Input";
 
 const AddUser: FC = () => {
   const { users } = useContext(userContext);
   const history = useHistory();
 
-  const backUsersList = () => {
-    history.push('/users');
+  const backToUsersList = () => {
+    history.push("/users");
   };
 
-  const createNewUserMutation = useMutation('add-new-user', createNewUser, {
+  const createNewUserMutation = useMutation("add-new-user", createNewUser, {
     onSuccess: (data) => {
       console.log(data);
-      backUsersList();
+      // @ts-ignore
+      alert("User add");
+      backToUsersList();
     },
     onError: () => {
-      alert('there was an error');
+      alert("there was an error");
     }
   });
 
   console.log(users);
 
-  const form = useForm<FormInputs>({
+  const form = useForm<User>({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: '',
-      username: '',
-      email: '',
-      website: ''
+      name: "",
+      username: "",
+      email: "",
+      website: ""
     }
   });
 
-  const onSubmit = (data: FormInputs) => {
-    const employee = {
+  const onSubmit = (data: User) => {
+    const newUser = {
       ...data
     };
-    createNewUserMutation.mutate(employee);
+    createNewUserMutation.mutate(newUser);
   };
 
   // useEffect(() => {
@@ -60,8 +62,9 @@ const AddUser: FC = () => {
   // }, [createNewUser.isSuccess]);
 
   // @ts-ignore
+
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="xs">
       <Typography variant="h3" align="center">
         Add new user
       </Typography>
@@ -79,7 +82,7 @@ const AddUser: FC = () => {
             helperText={
               form.formState.errors.name
                 ? form.formState.errors.name?.message
-                : ''
+                : ""
             }
             fullWidth
             variant="outlined"
@@ -93,7 +96,7 @@ const AddUser: FC = () => {
             helperText={
               form.formState.errors.username
                 ? form.formState.errors.username?.message
-                : ''
+                : ""
             }
             variant="outlined"
             fullWidth
@@ -107,7 +110,7 @@ const AddUser: FC = () => {
             helperText={
               form.formState.errors.email
                 ? form.formState.errors.email?.message
-                : ''
+                : ""
             }
             variant="outlined"
             fullWidth
@@ -116,12 +119,12 @@ const AddUser: FC = () => {
           <Input
             name="website"
             control={form.control}
-            label="Email"
+            label="Website"
             error={!!form.formState.errors.website}
             helperText={
               form.formState.errors.website
                 ? form.formState.errors.website?.message
-                : ''
+                : ""
             }
             variant="outlined"
             fullWidth

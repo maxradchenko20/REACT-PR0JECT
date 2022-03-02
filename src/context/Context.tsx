@@ -1,13 +1,13 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
 export const initialContext = {
   isLoggedIn: false,
   setIsLoggedIn: Function,
-  userName: '',
+  userName: "",
   setUserName: Function,
   users: [],
   setUsers: Function,
-  searchValue: '',
+  searchValue: "",
   setSearchValue: Function
 };
 
